@@ -79,7 +79,7 @@ public class GyroTurn extends LinearOpMode {
             telemetry.addData("3. z", String.format("%03d", zVal));
             telemetry.addData("4. h", String.format("%03d", heading));
 
-            Thread.sleep(5000);
+            Thread.sleep(6000);
         }
     }
 }
