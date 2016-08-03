@@ -40,20 +40,25 @@ import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class GyroTurn extends LinearOpMode {
+    TouchSensor t;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         GyroSensor sensorGyro;
+
         int xVal, yVal, zVal = 0;
         int heading = 0;
 
         hardwareMap.logDevices();
 
         sensorGyro = hardwareMap.gyroSensor.get("gyro");
+        t = hardwareMap.touchSensor.get("t");
+
 
         sensorGyro.calibrate();
 
@@ -64,7 +69,7 @@ public class GyroTurn extends LinearOpMode {
         }
 
         while (opModeIsActive()) {
-            if (gamepad1.a && gamepad1.b) {
+            if (t.isPressed() == true) {
                 sensorGyro.resetZAxisIntegrator();
             }
 
