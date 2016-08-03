@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class GyroTurn extends LinearOpMode {
     TouchSensor t;
-    int targetHeading = 85;  //This need to change and fixed to be exactly 90 degree turn
+    int targetHeading = 85;  //This need to change and fixed to be exactly 90 degree tur
     int currentHeading;
     int heading = 0;
     DcMotor motorRight;
