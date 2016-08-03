@@ -80,8 +80,8 @@ public class LineFollow extends LinearOpMode {
         while (opModeIsActive()) {
             enableLed(true);
 
-            Basiclinefollow();
-            //Advancedlinefollow();
+            //Basiclinefollow();
+            Advancedlinefollow();
             telemetry.addData("Red  ", colorSensor.red());
             telemetry.addData("Green", colorSensor.green());
             telemetry.addData("Blue ", colorSensor.blue());
@@ -125,8 +125,14 @@ public class LineFollow extends LinearOpMode {
         double y = average_color();
         double motorLeftalf = y;
         double motorRightalf = 1 - y;
-        motorLeft.setPower(motorLeftalf);
-        motorRight.setPower(motorRightalf);
+
+
+        motorRightalf = -motorRightalf;
+        motorLeft.setPower(motorLeftalf / 12);
+        motorRight.setPower(motorRightalf / 12);
+        //motorLeft.setPower(.2);
+        //motorRight.setPower(.2);
+        telemetry.addData("The Average", y);
     }
 
 
@@ -139,10 +145,12 @@ public class LineFollow extends LinearOpMode {
         }
     }
 
-    public int average_color() {
-        int x;
+    public double average_color() {
+        double x;
         x = (colorSensor.blue() + colorSensor.green() + colorSensor.red()) / 3;
-        return x / 255;
+        x = x / 30;
+        x = x - 1;
+        return x;
     }
 
     public boolean is_color_white() {
