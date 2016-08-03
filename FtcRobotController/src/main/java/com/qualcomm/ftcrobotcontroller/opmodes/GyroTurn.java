@@ -31,33 +31,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
-import com.qualcomm.ftccommon.DbgLog;
-import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class GyroTurn extends LinearOpMode {
     TouchSensor t;
-
+    int targetHeading = 85;  //This need to change and fixed to be exactly 90 degree turn
+    int currentHeading;
+    int heading = 0;
+    DcMotor motorRight;
+    DcMotor motorLeft;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         GyroSensor sensorGyro;
 
-        int xVal, yVal, zVal = 0;
-        int heading = 0;
 
         hardwareMap.logDevices();
 
         sensorGyro = hardwareMap.gyroSensor.get("gyro");
         t = hardwareMap.touchSensor.get("t");
+
+        motorLeft = hardwareMap.dcMotor.get("motor_1");
+        motorRight = hardwareMap.dcMotor.get("motor_2");
 
 
         sensorGyro.calibrate();
@@ -69,22 +68,41 @@ public class GyroTurn extends LinearOpMode {
         }
 
         while (opModeIsActive()) {
+            currentHeading = heading;
             if (t.isPressed() == true) {
                 sensorGyro.resetZAxisIntegrator();
+                motorLeft.setPower(0);
+                motorRight.setPower(0);
+                Thread.sleep(1000);
             }
 
-            xVal = sensorGyro.rawX();
-            yVal = sensorGyro.rawY();
-            zVal = sensorGyro.rawZ();
+            if (currentHeading > targetHeading + 5) {
+                motorRight.setPower(-0.1);
+                motorLeft.setPower(-0.1);
+            }
+
+            if (currentHeading < targetHeading - 5) {
+                motorRight.setPower(0.1);
+                motorLeft.setPower(0.1);
+            }
+            if (currentHeading > targetHeading && currentHeading <= targetHeading + 5) {
+                motorRight.setPower(-0.07);
+                motorLeft.setPower(-0.07);
+            }
+
+            if (currentHeading < targetHeading && currentHeading >= targetHeading - 5) {
+                motorRight.setPower(0.07);
+                motorLeft.setPower(0.07);
+            } else {
+                motorLeft.setPower(0);
+                motorRight.setPower(0);
+            }
 
             heading = sensorGyro.getHeading();
 
-            telemetry.addData("1. x", String.format("%03d", xVal));
-            telemetry.addData("2. y", String.format("%03d", yVal));
-            telemetry.addData("3. z", String.format("%03d", zVal));
-            telemetry.addData("4. h", String.format("%03d", heading));
+            telemetry.addData("h", String.format("%03d", heading));
 
-            Thread.sleep(6000);
+            Thread.sleep(10);
         }
     }
 }
