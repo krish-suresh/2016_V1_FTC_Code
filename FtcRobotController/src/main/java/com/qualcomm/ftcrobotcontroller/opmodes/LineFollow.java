@@ -31,11 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
-import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -81,9 +76,12 @@ public class LineFollow extends LinearOpMode {
         waitForStart();
         motorRight.setPower(0);
         motorLeft.setPower(0);
+        enableLed(false);
         while (opModeIsActive()) {
             enableLed(true);
-            Advancedlinefollow();
+
+            Basiclinefollow();
+            //Advancedlinefollow();
             telemetry.addData("Red  ", colorSensor.red());
             telemetry.addData("Green", colorSensor.green());
             telemetry.addData("Blue ", colorSensor.blue());
@@ -108,17 +106,19 @@ public class LineFollow extends LinearOpMode {
         }
     }
 
-    public void Basiclinefollow(int x) {
-        for (int i = 0; i < x; i++) {
-            while (is_color_black() != true) {
-                motorRight.setPower(0.5);
+    public void Basiclinefollow() {
+
+
+            if (is_color_black() != true) {
+                motorLeft.setPower(-0.3);
+            }else {
+                motorLeft.setPower(0);
             }
-            motorRight.setPower(0);
-            while (is_color_white() != true) {
-                motorLeft.setPower(0.5);
+            if (is_color_white() != true) {
+                motorRight.setPower(0.3);
+            }else {
+                motorRight.setPower(0);
             }
-            motorLeft.setPower(0);
-        }
     }
 
     public void Advancedlinefollow() {
@@ -131,7 +131,8 @@ public class LineFollow extends LinearOpMode {
 
 
     public boolean is_color_black() {
-        if (colorSensor.red() <= 25 && colorSensor.blue() <= 25 && colorSensor.green() <= 25) {
+        int x = 25;
+        if (colorSensor.red() <= x && colorSensor.blue() <= x && colorSensor.green() <= x) {
             return true;
         } else {
             return false;
@@ -145,7 +146,8 @@ public class LineFollow extends LinearOpMode {
     }
 
     public boolean is_color_white() {
-        if (colorSensor.red() >= 235 && colorSensor.blue() >= 235 && colorSensor.green() >= 235) {
+        int x = 35;
+        if (colorSensor.red() >= x && colorSensor.blue() >= x && colorSensor.green() >= x) {
             return true;
         } else {
             return false;

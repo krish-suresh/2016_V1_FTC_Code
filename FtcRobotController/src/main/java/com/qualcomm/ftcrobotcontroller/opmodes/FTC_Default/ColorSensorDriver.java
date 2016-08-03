@@ -32,7 +32,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftcrobotcontroller.opmodes.FTC_Default;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.View;
 
 import com.qualcomm.ftcrobotcontroller.R;
@@ -69,7 +68,7 @@ public class ColorSensorDriver extends LinearOpMode {
         colorSensor = hardwareMap.colorSensor.get("mr");
         break;
     }
-    led = hardwareMap.led.get("led");
+    //led = hardwareMap.led.get("led");
     t = hardwareMap.touchSensor.get("t");
 
     waitForStart();
@@ -81,28 +80,13 @@ public class ColorSensorDriver extends LinearOpMode {
 
       enableLed(t.isPressed());
 
-      switch (device) {
-        case HITECHNIC_NXT:
-          Color.RGBToHSV(colorSensor.red(), colorSensor.green(), colorSensor.blue(), hsvValues);
-          break;
-        case ADAFRUIT:
-          Color.RGBToHSV((colorSensor.red() * 255) / 800, (colorSensor.green() * 255) / 800, (colorSensor.blue() * 255) / 800, hsvValues);
-          break;
-        case MODERN_ROBOTICS_I2C:
-          Color.RGBToHSV(colorSensor.red()*8, colorSensor.green()*8, colorSensor.blue()*8, hsvValues);
-          break;
-      }
-      telemetry.addData("Clear", colorSensor.alpha());
+
       telemetry.addData("Red  ", colorSensor.red());
       telemetry.addData("Green", colorSensor.green());
       telemetry.addData("Blue ", colorSensor.blue());
-      telemetry.addData("Hue", hsvValues[0]);
 
-      relativeLayout.post(new Runnable() {
-        public void run() {
-          relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-        }
-      });
+
+
       waitOneFullHardwareCycle();
     }
   }
