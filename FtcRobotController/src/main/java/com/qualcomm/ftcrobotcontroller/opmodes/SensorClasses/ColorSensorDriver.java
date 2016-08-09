@@ -29,16 +29,19 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package com.qualcomm.ftcrobotcontroller.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses;
 
+import android.app.Activity;
+import android.view.View;
+
+import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-public class LineFollow extends LinearOpMode {
+public class ColorSensorDriver extends LinearOpMode {
 
     public enum ColorSensorDevice {ADAFRUIT, HITECHNIC_NXT, MODERN_ROBOTICS_I2C}
 
@@ -50,15 +53,11 @@ public class LineFollow extends LinearOpMode {
     DeviceInterfaceModule cdim;
     LED led;
     TouchSensor t;
-    DcMotor motorRight;
-    DcMotor motorLeft;
-
 
     @Override
     public void runOpMode() throws InterruptedException {
         hardwareMap.logDevices();
-        motorLeft = hardwareMap.dcMotor.get("motor_1");
-        motorRight = hardwareMap.dcMotor.get("motor_2");
+
         cdim = hardwareMap.deviceInterfaceModule.get("dim");
         switch (device) {
             case HITECHNIC_NXT:
@@ -71,25 +70,26 @@ public class LineFollow extends LinearOpMode {
                 colorSensor = hardwareMap.colorSensor.get("mr");
                 break;
         }
+        //led = hardwareMap.led.get("led");
         t = hardwareMap.touchSensor.get("t");
 
         waitForStart();
-        motorRight.setPower(0);
-        motorLeft.setPower(0);
-        enableLed(false);
-        while (opModeIsActive()) {
-            enableLed(true);
 
-            //Basiclinefollow();
-            Advancedlinefollow();
+        float hsvValues[] = {0, 0, 0};
+        final float values[] = hsvValues;
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
+        while (opModeIsActive()) {
+
+            enableLed(t.isPressed());
+
+
             telemetry.addData("Red  ", colorSensor.red());
             telemetry.addData("Green", colorSensor.green());
             telemetry.addData("Blue ", colorSensor.blue());
 
+
             waitOneFullHardwareCycle();
         }
-        motorRight.setPower(0);
-        motorLeft.setPower(0);
     }
 
     private void enableLed(boolean value) {
@@ -103,62 +103,6 @@ public class LineFollow extends LinearOpMode {
             case MODERN_ROBOTICS_I2C:
                 colorSensor.enableLed(value);
                 break;
-        }
-    }
-
-    public void Basiclinefollow() {
-
-
-            if (is_color_black() != true) {
-                motorLeft.setPower(-0.3);
-            }else {
-                motorLeft.setPower(0);
-            }
-            if (is_color_white() != true) {
-                motorRight.setPower(0.3);
-            }else {
-                motorRight.setPower(0);
-            }
-    }
-
-    public void Advancedlinefollow() {
-        double y = average_color();
-        double motorLeftalf = y;
-        double motorRightalf = 1 - y;
-
-
-        motorRightalf = -motorRightalf;
-        motorLeft.setPower(motorLeftalf / 12);
-        motorRight.setPower(motorRightalf / 12);
-        //motorLeft.setPower(.2);
-        //motorRight.setPower(.2);
-        telemetry.addData("The Average", y);
-    }
-
-
-    public boolean is_color_black() {
-        int x = 25;
-        if (colorSensor.red() <= x && colorSensor.blue() <= x && colorSensor.green() <= x) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public double average_color() {
-        double x;
-        x = (colorSensor.blue() + colorSensor.green() + colorSensor.red()) / 3;
-        x = x / 30;
-        x = x - 1;
-        return x;
-    }
-
-    public boolean is_color_white() {
-        int x = 35;
-        if (colorSensor.red() >= x && colorSensor.blue() >= x && colorSensor.green() >= x) {
-            return true;
-        } else {
-            return false;
         }
     }
 }

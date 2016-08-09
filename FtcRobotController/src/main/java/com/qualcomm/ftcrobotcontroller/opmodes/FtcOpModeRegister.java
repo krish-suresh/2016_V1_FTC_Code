@@ -29,10 +29,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package com.qualcomm.ftcrobotcontroller.opmodes.FTC_Default;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.GyroTurn;
-import com.qualcomm.ftcrobotcontroller.opmodes.LineFollow;
+import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.ColorSensorDriver;
+import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.GyroTurn;
+import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.LineFollow;
+import com.qualcomm.ftcrobotcontroller.opmodes.TeleOpHumanoid;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -57,13 +59,13 @@ public class FtcOpModeRegister implements OpModeRegister {
      * If two or more op modes are registered with the same name, the app will display an error.
      */
 
-    manager.register("NullOp", NullOp.class);
+      //manager.register("NullOp", NullOp.class);
 
     //manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
-    manager.register("K9TeleOp", K9TeleOp.class);
-    manager.register("K9Line", K9Line.class);
-    manager.register ("PushBotAuto", PushBotAuto.class);
-    manager.register ("PushBotManual", PushBotManual.class);
+      //manager.register("K9TeleOp", K9TeleOp.class);
+      //manager.register("K9Line", K9Line.class);
+      //manager.register ("PushBotAuto", PushBotAuto.class);
+      //manager.register ("PushBotManual", PushBotManual.class);
     manager.register("LineFollow", LineFollow.class);
     manager.register("GyroTurn", GyroTurn.class);
 
@@ -72,11 +74,12 @@ public class FtcOpModeRegister implements OpModeRegister {
     /*
      * Uncomment any of the following lines if you want to register an op mode.
      */
-    manager.register("MR Gyro Test", MRGyroTest.class);
+      //manager.register("MR Gyro Test", MRGyroTest.class);
 
 
     //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
-    manager.register("ColorSensorDriver", ColorSensorDriver.class);
+      manager.register("ColorSensorTest", ColorSensorDriver.class);
+      manager.register("Humanoid Robot click this one now", TeleOpHumanoid.class);
 
     //manager.register("IrSeekerOp", IrSeekerOp.class);
     //manager.register("CompassCalibration", CompassCalibration.class);
