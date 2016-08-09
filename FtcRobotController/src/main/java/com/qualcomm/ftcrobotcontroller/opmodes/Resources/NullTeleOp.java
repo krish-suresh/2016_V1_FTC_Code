@@ -2,10 +2,8 @@
 
 package com.qualcomm.ftcrobotcontroller.opmodes.Resources;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-
-public class NullTeleOp extends OpMode {
+public class NullTeleOp extends TeleOpImport {
 
 
     @Override
@@ -17,4 +15,5 @@ public class NullTeleOp extends OpMode {
     public void loop() {
 
     }
+
 }
