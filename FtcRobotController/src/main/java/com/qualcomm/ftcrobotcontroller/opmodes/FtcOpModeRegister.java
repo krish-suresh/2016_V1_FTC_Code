@@ -34,7 +34,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.ColorSensorDriver;
 import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.GyroTurn;
 import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.LineFollow;
-import com.qualcomm.ftcrobotcontroller.opmodes.TeleOpHumanoid;
+import com.qualcomm.ftcrobotcontroller.opmodes.Current.TeleOpHumanoid;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 

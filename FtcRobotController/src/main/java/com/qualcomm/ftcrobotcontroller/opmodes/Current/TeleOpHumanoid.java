@@ -1,7 +1,7 @@
 // Humanoid project    DATE: 8/8/16 started
 
 
-package com.qualcomm.ftcrobotcontroller.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes.Current;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.FTC_Default.PushBotHardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
