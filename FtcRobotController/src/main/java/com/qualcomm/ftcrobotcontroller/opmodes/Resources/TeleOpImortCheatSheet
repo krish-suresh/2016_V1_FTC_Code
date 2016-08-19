@@ -1,78 +1,21 @@
 TELEOP IMPORT CHEET SHEET
 
-example program using drive:
 
 
 
-
-
-
-
-
-
-
-
-
-
--motorPower
-sets a motors power
-
-    motorPower(motor,power);
-
-    motorPower(motor,power,doscale);
-
-        -motor: what motor to set the power of
-
-        -power: what power the motor should get
-
-        -doscale: boolean whehter to scale the input to optimal values, is set to true when parameter is not givin
 
 
 
 -scaleInput
-scales input for motor power
+    scales input for motor power
 
-    scaleInput(input)
+        scaleInput(input)
 
-        -will take the input and scale it to optimal values and will range it from a value from 1 to -1
-
-
-
--setdrivemotors
-set a motor to a drive motor
-
-    motorSetRight(motor);
-
-    motorSetLeft(motor);
-
-    motorSetDirve(rightmotor, leftmotor);
-
-        -motor: the motor you would like to set to the drive motor
-
-        -rightmotor: the right drive motor
-
-        -leftmotor: the left drive motor
+            -will take the input and scale it to optimal values and will range it from a value from 1 to -1
+            -does before setting motor power
 
 
 
 
--motorDrive
-move two motors at once
 
-    motorDrive(double bothPower)
 
-    motorDrive(double rightPower,double leftPower)
-
-    motorDrive(DcMotor rightMotor,DcMotor leftMotor,double bothPower)
-
-    motorDrive(DcMotor rightMotor,DcMotor leftMotor,double rightPower, double leftPower)
-
-        -bothPower: the power you want both the motors to go
-
-        -rightPower: the power you want the right motor to go
-
-        -leftPower: the power you want the left motor to go
-
-        -rightMotor: the right motor you want to drive
-
-        -leftMotor: the left motor you want to drive

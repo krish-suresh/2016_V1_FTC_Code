@@ -7,14 +7,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import java.util.ArrayList;
+
 
 public class TeleOpImport extends OpMode {
 
-    DcMotor tRightMotor;
-    DcMotor tLeftMotor;
-    boolean tRightMotorReady = false;
-    boolean tLeftMotorReady = false;
-    boolean tUseBasicDrive = false;
+
+    ArrayList<DcMotor> tMotor = new ArrayList<DcMotor>(100);
+    ArrayList<String> tMotorName = new ArrayList<String>(100);
+
+
+    public TeleOpImport() {
+    }
 
 
     @Override
@@ -24,9 +28,7 @@ public class TeleOpImport extends OpMode {
 
     @Override
     public void loop() {
-        if (tUseBasicDrive) {
 
-        }
     }
 
     @Override
@@ -34,57 +36,30 @@ public class TeleOpImport extends OpMode {
 
     }
 
-    public void backgrounddrive(boolean useBasicDrive) {
-        tUseBasicDrive = useBasicDrive;
+    public void addMotor(String name) {
+        tMotorName.add(name);
+        int slot = tMotorName.indexOf(name);
+        tMotor.set(slot, hardwareMap.dcMotor.get(name));
     }
 
-    public void motorSetRight(DcMotor rightMotor) {
-        tRightMotor = rightMotor;
-        tRightMotorReady = true;
-    }
-
-    public void motorSetLeft(DcMotor leftMotor) {
-        tLeftMotor = leftMotor;
-        tLeftMotorReady = true;
-    }
-
-    public void motorSetDrive(DcMotor rightMotor, DcMotor leftMotor) {
-        motorSetRight(rightMotor);
-        motorSetLeft(leftMotor);
+    public void setPower(String name, double Power) {
+        int slot = tMotorName.indexOf(name);
+        motorPower(tMotor.get(slot), Power);
     }
 
 
-    public void motorDrive(double bothPower) {
-        motorDrive(bothPower, bothPower);
-    }
-
-
-    public void motorDrive(double rightPower, double leftPower) {
-        if (tRightMotorReady && tLeftMotorReady) {
-            motorPower(tRightMotor, rightPower);
-            motorPower(tLeftMotor, leftPower);
-        }
-    }
-
-
-    public void motorDrive(DcMotor rightMotor, DcMotor leftMotor, double bothPower) {
-        motorPower(rightMotor, bothPower);
-        motorPower(leftMotor, bothPower);
-    }
-
-
-    public void motorDrive(DcMotor rightMotor, DcMotor leftMotor, double rightPower, double leftPower) {
+    void motorDrive(DcMotor rightMotor, DcMotor leftMotor, double rightPower, double leftPower) {
         motorPower(rightMotor, rightPower);
         motorPower(leftMotor, leftPower);
     }
 
 
-    public void motorPower(DcMotor inputMotor, double power) {
+    void motorPower(DcMotor inputMotor, double power) {
         motorPower(inputMotor, power, true);
     }
 
 
-    public void motorPower(DcMotor inputMotor, double power, boolean doscale) {
+    void motorPower(DcMotor inputMotor, double power, boolean doscale) {
         if (doscale) {
             power = scaleInput(power);
         } else {

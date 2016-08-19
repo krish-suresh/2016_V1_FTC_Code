@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.Resources.NullTeleOp;
 import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.ColorSensorDriver;
 import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.GyroTurn;
 import com.qualcomm.ftcrobotcontroller.opmodes.SensorClasses.LineFollow;
@@ -68,7 +69,7 @@ public class FtcOpModeRegister implements OpModeRegister {
       //manager.register ("PushBotManual", PushBotManual.class);
     manager.register("LineFollow", LineFollow.class);
     manager.register("GyroTurn", GyroTurn.class);
-
+      manager.register("NullTeleOp", NullTeleOp.class);
 
 
     /*
