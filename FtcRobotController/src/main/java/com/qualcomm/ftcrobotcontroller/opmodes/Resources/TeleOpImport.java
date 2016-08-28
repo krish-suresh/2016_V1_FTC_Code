@@ -12,10 +12,11 @@ import java.util.ArrayList;
 
 public class TeleOpImport extends OpMode {
 
-
-    ArrayList<DcMotor> tMotor = new ArrayList<DcMotor>(100);
-    ArrayList<String> tMotorName = new ArrayList<String>(100);
-
+    ArrayList<String> reversedMotor = new ArrayList<String>();
+    boolean backgoundDrive = false;
+    boolean backgroundDriveOn = false;
+    String rightMotorName;
+    String leftMotorName;
 
     public TeleOpImport() {
     }
@@ -28,7 +29,10 @@ public class TeleOpImport extends OpMode {
 
     @Override
     public void loop() {
-
+        if (backgoundDrive && backgroundDriveOn) {
+            setPower(rightMotorName, gamepad1.right_stick_y);
+            setPower(leftMotorName, gamepad1.left_stick_y);
+        }
     }
 
     @Override
@@ -36,23 +40,41 @@ public class TeleOpImport extends OpMode {
 
     }
 
-    public void addMotor(String name) {
-        tMotorName.add(name);
-        int slot = tMotorName.indexOf(name);
-        tMotor.set(slot, hardwareMap.dcMotor.get(name));
+
+    //Background Drive
+
+    public void backgoundDrive(String rightname, String leftname) {
+        rightMotorName = rightname;
+        leftMotorName = leftname;
+        backgoundDrive = true;
+        backgroundDriveOn = true;
     }
 
-    public void setPower(String name, double Power) {
-        int slot = tMotorName.indexOf(name);
-        motorPower(tMotor.get(slot), Power);
+    public void backgroundDrive(boolean onoff) {
+        backgroundDriveOn = onoff;
     }
 
 
-    void motorDrive(DcMotor rightMotor, DcMotor leftMotor, double rightPower, double leftPower) {
-        motorPower(rightMotor, rightPower);
-        motorPower(leftMotor, leftPower);
+    //Reverse Motor
+
+    public void reverseMotor(String name) {
+        if (reversedMotor.contains(name)) {
+            reversedMotor.remove(name);
+        } else {
+            reversedMotor.add(name);
+        }
     }
 
+    //SetPower
+
+    public void setPower(String name, double power) {
+        if (reversedMotor.contains(name)) {
+            power = -power;
+        }
+        motorPower(hardwareMap.dcMotor.get(name), power);
+    }
+
+    //Motor Power (Non-public)
 
     void motorPower(DcMotor inputMotor, double power) {
         motorPower(inputMotor, power, true);

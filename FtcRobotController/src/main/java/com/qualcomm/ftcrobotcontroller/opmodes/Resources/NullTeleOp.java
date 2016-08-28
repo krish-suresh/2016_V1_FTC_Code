@@ -12,7 +12,7 @@ public class NullTeleOp extends TeleOpImport {
     @Override
     public void init() {
 
-        addMotor("motor_1");
+
     }
 
 

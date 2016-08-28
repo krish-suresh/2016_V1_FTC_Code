@@ -1,18 +1,28 @@
-TELEOP IMPORT CHEET SHEET
+TELEOP IMPORT CHEAT SHEET
+
+-Set Power
+    setPower(Motor Name, Motor Power);
+        -will set the power of the motor, -1 to 1
+        -motor name must match the motor name on the phone
+
+        ex: setPower("motor_1",.81); --> will set the motor, motor_1, to the power of .81
+
+-Reverse Motor
+    reverseMotor(Motor Name)
+        -will reverse that motor when using setPower and any backgroundDrive functions
+        -motor name must match the motor name on the phone
+
+        ex: reverseMotor("motor_1"); --> will reverse the motor named motor_1
+
+-Scale Input
+    scaleInput(Input);
+        -will take the input and scale it to optimal values and will range it from a value from 1 to -1
+
+        ex: scaleInput(1.3) --> would change to 1
 
 
 
 
-
-
-
--scaleInput
-    scales input for motor power
-
-        scaleInput(input)
-
-            -will take the input and scale it to optimal values and will range it from a value from 1 to -1
-            -does before setting motor power
 
 
 
