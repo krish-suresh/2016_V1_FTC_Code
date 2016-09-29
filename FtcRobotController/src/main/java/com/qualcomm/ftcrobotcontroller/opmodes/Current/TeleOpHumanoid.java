@@ -6,24 +6,23 @@ package com.qualcomm.ftcrobotcontroller.opmodes.Current;
 import com.qualcomm.ftcrobotcontroller.opmodes.FTC_Default.PushBotHardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 
 public class TeleOpHumanoid extends PushBotHardware {
 
     //Drive
 
-    double left = 0.0;
-    double right = 0.0;
+    double leftF = 0.0;
+    double rightF = 0.0;
+    double leftB = 0.0;
+    double rightB = 0.0;
 
 
-    DcMotor motorRight;
-    DcMotor motorLeft;
+    DcMotor motorFRight;
+    DcMotor motorFLeft;
 
-    //Arm
-
-    DcMotor motorRightArm;
-    DcMotor motorLeftArm;
+    DcMotor motorBRight;
+    DcMotor motorBLeft;
 
     Servo servoRightArm;
     double servorightarmvalue = .5;
@@ -41,21 +40,19 @@ public class TeleOpHumanoid extends PushBotHardware {
     public void init() {
 
 
-        motorRight = hardwareMap.dcMotor.get("motor_1");
-        motorLeft = hardwareMap.dcMotor.get("motor_2");
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorFRight = hardwareMap.dcMotor.get("motor_RF");
+        motorFLeft = hardwareMap.dcMotor.get("motor_LF");
+        motorBRight = hardwareMap.dcMotor.get("motor_RB");
+        motorBLeft = hardwareMap.dcMotor.get("motor_LB");
+
+        motorFRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBLeft.setDirection(DcMotor.Direction.REVERSE);
 
 
-        motorRightArm = hardwareMap.dcMotor.get("rightarm");
-        // motorRightArm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        //reset_drive_encoders();
-
-        motorLeftArm = hardwareMap.dcMotor.get("leftarm");
-
-        servoLeftArm = hardwareMap.servo.get("servoleftarm");
+        //servoLeftArm = hardwareMap.servo.get("servoleftarm");
 
 
-        servoRightArm = hardwareMap.servo.get("servorightarm");
+        //servoRightArm = hardwareMap.servo.get("servorightarm");
 
 
         servoHead = hardwareMap.servo.get("servohead");
@@ -79,45 +76,18 @@ public class TeleOpHumanoid extends PushBotHardware {
         }
         */
 
-        left = gamepad1.left_stick_y;
-        right = gamepad1.right_stick_y;
+
+        leftF = gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x;
+        rightF = gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x;
+        leftB = -gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x;
+        rightB = -gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x;
 
 
-        right = Range.clip(right, -1, 1);
-        left = Range.clip(left, -1, 1);
-
-
-        motorRight.setPower(scaleInput(right) / 3);
-        motorLeft.setPower(scaleInput(left) / 3);
-
-
-        //arm left
-
-        motorLeftArm.setPower(scaleInput(Range.clip(-gamepad2.left_stick_y, -1, 1)) / 2);
-
-        if (gamepad2.x && !gamepad2.b) {
-            servoleftarmvalue = servoleftarmvalue + .01;
-        } else if (gamepad2.b && !gamepad2.x) {
-            servoleftarmvalue = servoleftarmvalue - .01;
-        }
-
-        servoLeftArm.setPosition(servoleftarmvalue);
-
-
-        //arm right
-
-        motorRightArm.setPower(scaleInput(Range.clip(gamepad2.right_stick_y, -1, 1)) / 2);
-
-        if (gamepad2.dpad_left && !gamepad2.dpad_right) {
-            servorightarmvalue = servorightarmvalue + .01;
-        } else if (gamepad2.dpad_right && !gamepad2.dpad_left) {
-            servorightarmvalue = servorightarmvalue - .01;
-        }
-
-        servoRightArm.setPosition(servorightarmvalue);
-
-
-        //head
+        motorFRight.setPower(scaleInput(leftF / 2));
+        motorFLeft.setPower(scaleInput(rightF / 2));
+        motorBRight.setPower(scaleInput(rightB / 2));
+        motorBLeft.setPower(scaleInput(rightB / 2))
+        ;
 
 
         if (gamepad1.right_bumper && !gamepad1.left_bumper) {
@@ -126,13 +96,18 @@ public class TeleOpHumanoid extends PushBotHardware {
             servoheadvalue = servoheadvalue - .01;
         }
 
+        if (servoheadvalue > 1) {
+            servoheadvalue = .5;
+        } else if (servoheadvalue < 0) {
+            servoheadvalue = 0;
+        }
+
         servoHead.setPosition(servoheadvalue);
 
 
         telemetry.addData("Text", "*** Robot Data***");
-        telemetry.addData("left tgt pwr", "left  pwr: " + String.format("%.2f", left));
-        telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
-        telemetry.addData("", motorRightArm.getCurrentPosition());
+        //telemetry.addData("left tgt pwr", "left  pwr: " + String.format("%.2f", left));
+        //telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
     }
 
 
